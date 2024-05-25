@@ -12,6 +12,7 @@ import com.levelOne.game.entity.living.LivingEntity;
 import com.levelOne.game.entity.living.LivingEntityEventHandler;
 import com.levelOne.game.entity.living.Monster;
 import com.levelOne.game.entity.living.Player;
+import com.levelOne.game.tiles.Tile;
 
 public class EntitiesManager implements Iterable<Entity>, LivingEntityEventHandler {
 	
@@ -111,6 +112,11 @@ public class EntitiesManager implements Iterable<Entity>, LivingEntityEventHandl
 		}
 		
 		setListEditingSafe(true);
+		
+		Point2D playerPosition = getPlayer().getPosition();
+		if (playerPosition.getY() > (tilesManager.getWorldHeight() + 8) * Tile.TILE_SIZE)
+			getPlayer().hurt(1_000_000);
+			
     }
 	
 	

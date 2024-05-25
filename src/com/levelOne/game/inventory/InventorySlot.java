@@ -58,7 +58,7 @@ public class InventorySlot implements ItemEventListener {
 
 		int oldQuantity = this.quantity;
 		this.quantity += quantity;
-		eventHandlers.forEach(handler -> handler.handle(new InventorySlot(getItem() != null ? (Item) getItem().clone() : null, oldQuantity), this));
+		eventHandlers.forEach(handler -> handler.handle(this, new InventorySlot(getItem() != null ? (Item) getItem().clone() : null, oldQuantity)));
 	}
 	
 	void addItem(int quantity, Item item) {
@@ -73,7 +73,7 @@ public class InventorySlot implements ItemEventListener {
 			setItem(item);
 			this.quantity = quantity;
 			
-			eventHandlers.forEach(handler -> handler.handle(oldSlot, this));
+			eventHandlers.forEach(handler -> handler.handle(this, oldSlot));
 		} else {
 			if (!this.item.isInstanceOf(item))
 				throw new IllegalArgumentException("Item type should be the same as the item type's in the slot");
@@ -98,7 +98,7 @@ public class InventorySlot implements ItemEventListener {
 		InventorySlot oldSlot = new InventorySlot(getItem() != null ? (Item) getItem().clone() : null, getQuantity());
 		this.quantity += toAdd;
 		
-		eventHandlers.forEach(handler -> handler.handle(oldSlot, this));
+		eventHandlers.forEach(handler -> handler.handle(this, oldSlot));
 		return quantity;
 	}
 	
@@ -122,7 +122,7 @@ public class InventorySlot implements ItemEventListener {
 		if (this.quantity == 0)
 			setItem(null);
 		
-		eventHandlers.forEach(handler -> handler.handle(oldSlot, this));
+		eventHandlers.forEach(handler -> handler.handle(this, oldSlot));
 	}
 	
 	/**
@@ -136,7 +136,7 @@ public class InventorySlot implements ItemEventListener {
 		this.quantity = 0;
 		setItem(null);
 		
-		eventHandlers.forEach(handler -> handler.handle(oldSlot, this));
+		eventHandlers.forEach(handler -> handler.handle(this, oldSlot));
 	}
 	
 	/**
@@ -232,7 +232,6 @@ public class InventorySlot implements ItemEventListener {
 	
 	@Override
 	public void itemDamaged(Item item, int damageAmount) {
-		System.out.println(item.getDurability());
 		if (item.getDurability() == 0) {
 			if (getQuantity() > 1 && item.reset())
 				removeItem(1);

@@ -32,6 +32,7 @@ public class EdibleItem extends Item {
 
 	@Override
 	public void use(Entity cible) {
+
 		if (cible instanceof LivingEntity) {
 			LivingEntity entity = (LivingEntity) cible; 
 			entity.heal(healAmount);

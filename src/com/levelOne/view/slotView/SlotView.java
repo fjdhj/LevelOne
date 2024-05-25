@@ -56,6 +56,7 @@ public class SlotView extends StackPane implements GameEventHandler<InventorySlo
 
 	@Override
 	public void handle(InventorySlot newValue, InventorySlot oldValue) {
+		System.out.println(newValue.getQuantity());
 		if (newValue.getItem() != null)
         	img.setImage(newValue.getItem().getTexture());
         else
