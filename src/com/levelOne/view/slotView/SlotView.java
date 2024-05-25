@@ -1,5 +1,6 @@
 package com.levelOne.view.slotView;
 
+import com.levelOne.game.GameEventHandler;
 import com.levelOne.game.inventory.InventorySlot;
 import com.levelOne.game.item.ItemEnum;
 
@@ -13,7 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class SlotView extends StackPane{
+public class SlotView extends StackPane implements GameEventHandler<InventorySlot>{
 
 	private ImageView img;
 	private Label label;
@@ -41,14 +42,7 @@ public class SlotView extends StackPane{
 		
 		getChildren().addAll(img, labelPane);
 		
-		slot.addEventHandler((oldSlot, newSlot) -> {
-            if (newSlot.getItem() != null)
-            	img.setImage(newSlot.getItem().getTexture());
-            else
-            	img.setImage(ItemEnum.noItemTexture);
-            
-            setQuantity(newSlot.getQuantity());
-        });
+		slot.addEventHandler(this);
 		
 		setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 0.5), null, null)));
 	}
@@ -58,5 +52,15 @@ public class SlotView extends StackPane{
 			label.setText("");
 		else
 			label.setText("" + quantity);
+	}
+
+	@Override
+	public void handle(InventorySlot newValue, InventorySlot oldValue) {
+		if (newValue.getItem() != null)
+        	img.setImage(newValue.getItem().getTexture());
+        else
+        	img.setImage(ItemEnum.noItemTexture);
+        
+        setQuantity(newValue.getQuantity());		
 	}
 }
