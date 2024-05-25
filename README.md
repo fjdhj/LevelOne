@@ -1,17 +1,30 @@
 # LevelOne
 
-Le jeu est un platformer, voici les controle :
+
+
+
+Le jeu est un platformer, voici les contrôles :
 Q : Aller à gauche
 D : Aller à droite
-Z : Interagire avec le monde (PNJ, coffre, ...)
+Z : Interagir avec le monde (PNJ, coffre, ...)
 Shift : Courir
 E : Ouvrir l'inventaire
-Click gauche : Taper
-Click droit : Utiliser l'objet
+Clic gauche : Taper
+Clic droit : Utiliser l'objet
+
+
+
 
 ## Lancer le jeu
-Pour le lancer le jeu, utiliser au minimume Java 17 et JavaFX 17 en spécifiant le chemin vers JavaFX dans la commande
+Pour le lancer le jeu, utiliser au minimum Java 17 et JavaFX 17 en spécifiant le chemin vers JavaFX dans la commande
+```
 java --module-path {CHEMIN VERS JAVAFX} --add-modules javafx.controls,javafx.fxml,javafx.swing,javafx.base,javafx.graphics,javafx.media,javafx.web -jar LevelOne.jar
+```
 
-Le jeu viens avec JavaFX 17 pour Linux, pour le lancer avec cette version :
+
+
+
+Le jeu vient avec JavaFX 17 pour Linux, pour le lancer avec cette version :
+```
 java --module-path JavaFX17 --add-modules javafx.controls,javafx.fxml,javafx.swing,javafx.base,javafx.graphics,javafx.media,javafx.web -jar LevelOne.jar
+```
