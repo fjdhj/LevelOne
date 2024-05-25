@@ -1,0 +1,9 @@
+.hotbarSlot {
+	-fx-padding: 6;
+	-fx-background-color: lightgrey;
+	-fx-opcaity: hidden;
+}
+
+.activeHotbarSlot {
+	-fx-background-color: firebrick;
+}
