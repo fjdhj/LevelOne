@@ -9,8 +9,10 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 
 public class StartMenu implements FXView {
 
@@ -22,7 +24,7 @@ public class StartMenu implements FXView {
 	
 	private SceneController controller;
 	
-	public StartMenu(SceneController controller) {
+	public StartMenu(SceneController controller) {		
 		playButton = new Button("Play");
 		playButton.setOnAction(e -> {
 			controller.showWorld("LevelOne");
