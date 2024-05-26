@@ -2,6 +2,7 @@ package com.levelOne.worldLoader;
 
 import com.levelOne.game.entity.Entity;
 import com.levelOne.game.tiles.Tile;
+import com.levelOne.game.victory.VictoryCondition;
 
 public interface WorldLoaderEvent {
 	/**
@@ -31,6 +32,12 @@ public interface WorldLoaderEvent {
 	 * @param y
 	 */
 	public void onPlayerParsed(int x, int y);
+	
+	/**
+	 * Called when a victory condition is parsed
+	 * @param condition The victory condition parsed
+	 */
+	public void onVictoryConditionParsed(VictoryCondition condition);
 	
 	/**
 	 * Called once when the loading is finished

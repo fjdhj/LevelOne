@@ -14,13 +14,29 @@ import com.levelOne.game.inventory.Inventory;
 import com.levelOne.game.item.Item;
 import com.levelOne.game.tiles.InventoryTile;
 import com.levelOne.game.tiles.Tile;
+import com.levelOne.game.victory.XPosSuperior;
 
+
+/**
+ * This class is responsible for loading a world from a file
+ * See world/LevelOne.world to see the format of the file
+ * For each important point an event is called to notify that this point has been parsed and can be stored</br>
+ * 
+ * Here are the readind and parsing flow:</br>
+ * <ol>
+ * <li>Line is read</li>
+ * <li>Checking whiche one of the following mode is active for parsing</li>
+ * <li>Depending on the mode, the line is parsed</li>
+ * </ol>
+ */
 public class WorldLoader {
 
 	private static final int MODE_NONE = 0;
 	private static final int MODE_HEADER = 1;
 	private static final int MODE_TILES = 2;
 	private static final int MODE_ENTITIES = 3;
+	private static final int MODE_VICTORY = 4;
+
 	
 	private static final int MODE_CHEST = 10;
 	
@@ -109,11 +125,15 @@ public class WorldLoader {
 			case MODE_CHEST:
 				parseChest(line, lineCount);
 				break;
+			
+			case MODE_VICTORY:
+				parseVictory(line, lineCount);
+				break;
 		}
 	}
 	
 	/**
-	 * Parse the header
+	 * Parse a line containing a header
 	 * @param line      The line to parse
 	 * @param lineCount The line number
 	 * @throws HeaderExpectedException If the header is expected but not found
@@ -141,13 +161,20 @@ public class WorldLoader {
 			
 			readingMode = MODE_CHEST;
 			break;
+		
+		case "#victory":
+			if (!allTilesParsed)
+				throw new HeaderExpectedException("The tiles must be parsed before setting the victory conditions");
+			
+			readingMode = MODE_VICTORY;
+			break;
 		default:
 			throw new HeaderExpectedException("A valid header was expected but '"+line+"' was found at line "+lineCount);
 		}
 	}
 	
 	/**
-	 * Parse header lines
+	 * Parse a line containing a header property
 	 * @param line The line to parse
 	 * @param lineCount The line number
 	 * @throws PropertyInvalidException If the property is invalid
@@ -184,7 +211,7 @@ public class WorldLoader {
 	}
 	
 	/**
-	 * Parse the tiles
+	 * Parse a line containing tiles placement
 	 * @param line      The line to parse
 	 * @param lineCount The line number
 	 * @throws PropertyInvalidException If the property is invalid
@@ -217,7 +244,13 @@ public class WorldLoader {
 		yTileLevel++;
 	}
 	
-	public void parseEntity(String line, int lineCount) throws PropertyInvalidException {
+	/**
+	 * Parse a line containing an entity
+	 * @param line The line to parse
+	 * @param lineCount The line number
+	 * @throws PropertyInvalidException If the property is invalid
+	 */
+	private void parseEntity(String line, int lineCount) throws PropertyInvalidException {
 		if (line.isEmpty()) {
 				readingMode = MODE_NONE;
 				allEntitiesParsed = true;
@@ -257,7 +290,13 @@ public class WorldLoader {
 		
 	}
 
-	public void parseChest(String line, int lineCount) throws PropertyInvalidException {
+	/**
+	 * Parse a line containing a chest content
+	 * @param line The line to parse
+	 * @param lineCount The line number
+	 * @throws PropertyInvalidException If the property is invalid
+	 */
+	private void parseChest(String line, int lineCount) throws PropertyInvalidException {
 		if (line.isEmpty()) {
 			readingMode = MODE_NONE;
 			editingTile = null;
@@ -297,9 +336,46 @@ public class WorldLoader {
 			Inventory inv = ((InventoryTile) editingTile).getInventory();
 			inv.addItem(Item.createFromString(itemData[0]), Integer.parseInt(itemData[1]), Integer.parseInt(itemData[2]));
 			break;
+		
+		default:
+			throw new PropertyInvalidException("Invalid chest property: '" + line + "' at line " + lineCount);
 		}
 	}
 
+	/**
+	 * Parse a line containing a victory condition
+	 * @param line The line to parse
+	 * @param lineCount The line number
+	 * @throws PropertyInvalidException If the property is invalid
+	 */
+	private void parseVictory(String line, int lineCount) throws PropertyInvalidException {
+		if (line.isEmpty()) {
+			readingMode = MODE_NONE;
+			return;
+		}
+		
+		String[] parts = line.split(":");
+		if (parts.length != 2)
+			throw new PropertyInvalidException("Invalid entity property: '" + line + "' at line " + lineCount);
+		
+		String victoryName = parts[0].trim();
+		String data = parts[1].trim();
+		
+		switch (victoryName) {
+		case "XPosSuperior":
+			int posX = Integer.parseInt(data);		
+			event.onVictoryConditionParsed(new XPosSuperior(posX));
+			break;
+		default:
+			throw new PropertyInvalidException("Invalid victory condition: '" + line + "' at line " + lineCount);
+		}
+	}
+	
+	
+	/**
+	 * Set the tile manager
+	 * @param tilesManager The tile manager
+	 */
 	public void setTileManager(TilesManager tilesManager) {
 		this.tilesManager = tilesManager;
 	}

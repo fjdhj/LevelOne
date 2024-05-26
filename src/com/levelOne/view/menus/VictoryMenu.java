@@ -36,7 +36,7 @@ public class VictoryMenu implements FXView {
 		root.setOrientation(Orientation.VERTICAL);
 		root.setVgap(16);
 		root.setAlignment(Pos.CENTER);
-		root.getChildren().addAll(playButton, exitButton);
+		root.getChildren().addAll(label, playButton, exitButton);
 	}
 	
 	@Override

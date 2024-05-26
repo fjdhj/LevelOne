@@ -3,6 +3,7 @@ package com.levelOne;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import com.levelOne.controls.InterfaceCallObserver;
 import com.levelOne.controls.KeyManager;
@@ -15,8 +16,8 @@ import com.levelOne.game.entity.living.LivingEntityEventHandler;
 import com.levelOne.game.entity.living.Player;
 import com.levelOne.game.entity.living.PlayerEventHandler;
 import com.levelOne.game.inventory.Inventory;
-import com.levelOne.game.tiles.InventoryTile;
 import com.levelOne.game.tiles.Tile;
+import com.levelOne.game.victory.VictoryCondition;
 import com.levelOne.view.FXView;
 import com.levelOne.view.WorldCanvas;
 import com.levelOne.view.WorldEvent;
@@ -61,6 +62,8 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 	private long lastTime = 0;
 	
 	private WorldEvent event;
+	
+	private ArrayList<VictoryCondition> victoryConditions;
 		
 	/**
 	 * Create a new world with the given width and height
@@ -70,6 +73,7 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 	public WorldEngine(String worldName, KeyManager keyManager, WorldEvent event) {
 		root = new StackPane();
 		this.event = event;
+		victoryConditions = new ArrayList<VictoryCondition>();
 		
 		cameraX = 0;
 		cameraY = 0;
@@ -114,6 +118,11 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 				public void onPlayerParsed(int x, int y) {
 					entitiesManager.getPlayer().teleport(new Point2D(x, y));
 					
+				}
+
+				@Override
+				public void onVictoryConditionParsed(VictoryCondition condition) {
+					victoryConditions.add(condition);					
 				}
 			});
 			
@@ -164,6 +173,8 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 		
 		canvas.draw(cameraX, cameraY, tileManager, entitiesManager);
 		
+		checkVictory();
+		
 		lastTime = now;
 	}
 
@@ -173,21 +184,40 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 		return root;
 	}
 	
+	/**
+	 * Return the x position of the camera
+	 * @return The x position of the camera
+	 */
 	public double getCameraX() {
         return cameraX;
     }
 	
+	/**
+	 * Return the y position of the camera
+	 * @return The y position of the camera
+	 */
 	public double getCameraY() {
         return cameraY;
     }
 	
-	protected void setTile(int x, int y, Tile tile) {
+	/**
+	 * Set the tile at the given position
+	 * @param x The x position of the tile
+	 * @param y The y position of the tile
+	 * @param tile The tile to set
+	 */
+	private void setTile(int x, int y, Tile tile) {
 		tileManager.setTile(x, y, tile);
 	}
 
 
 	
-	
+	/**
+	 * Show the given pop up on the screen
+	 * (a pop up is a pane that is displayed on top of the game like inventory, menu, etc.)
+	 * if a pop up is already open, it will do nothing
+	 * @param popUp The pop up to show
+	 */
 	private void showPopUp(Pane popUp) {
 		if (isPopUpOpen()) return;
 		
@@ -199,6 +229,10 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 		Entity.freezeAll();
 	}
 	
+	/**
+	 * Close the pop up if it is open
+	 * if no pop up is open, it will do nothing
+	 */
 	private void closePopUp() {
 		if (!isPopUpOpen())
 			return;
@@ -211,6 +245,10 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 		Entity.unfreezeAll();
 	}
 	
+	/**
+	 * Return true if a pop up is open, false otherwise
+	 * @return true if a pop up is open, false otherwise
+	 */
 	private boolean isPopUpOpen() {
 		return popUp != null;
 	}
@@ -249,15 +287,33 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 			closePopUp();
 	}
 	
+	/**
+	 * Check if a condition of victory is met
+	 * If a condition is met, it will stop the game and call the onVictory method of the event
+	 */
+	private void checkVictory() {
+		for (VictoryCondition condition : victoryConditions) {
+			if (condition.checkVictory(tileManager, entitiesManager)) {
+				stop();
+				event.onVictory();
+				return;
+			}
+		}
+	}
 	
+	/**
+	 * Call when a defeat condition is met
+	 * If a defeat condition is met, it will stop the game and call the onDefeat method of the event
+	 */
 	private void defeat() {
 		stop();
 		event.onDefeat();
 	}
 	
 	
-	/*
+	/* ------------------------------------------
 	 * Player event handler
+	 * ------------------------------------------
 	 */
 
 
