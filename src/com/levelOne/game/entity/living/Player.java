@@ -6,15 +6,17 @@ import com.levelOne.MainApp;
 import com.levelOne.controls.KeyManager;
 import com.levelOne.controls.PlayerKeyObserver;
 import com.levelOne.game.DamageZone;
-import com.levelOne.game.Point2D;
 import com.levelOne.game.entity.Entity;
 import com.levelOne.game.inventory.Inventory;
+import com.levelOne.game.inventory.InventoryEventHandler;
+import com.levelOne.game.inventory.InventorySlot;
 import com.levelOne.game.item.Item;
+import com.levelOne.game.item.PassiveItem;
 import com.levelOne.game.item.edible.Apple;
 
 import javafx.scene.image.Image;
 
-public class Player extends LivingEntity {
+public class Player extends LivingEntity implements InventoryEventHandler {
 	
 	private static final double DEFAULT_WEIGHT = 70.0; // In Kg
 	private static final int DEFAULT_MAX_LIFE = 10;
@@ -53,6 +55,9 @@ public class Player extends LivingEntity {
 		hotBar.addItem(new Apple(), 2, 1);
 		hotBar.addItem(new Apple(), 3, 2);
 		hotBar.addItem(new Apple(), 4, 3);
+		
+		getInventory().addEventHandler(this);
+		hotBar.addEventHandler(this);
 	}
 
 	public Player(int x, int y, int life, KeyManager keyManager) {
@@ -156,5 +161,20 @@ public class Player extends LivingEntity {
 		Item item = hotBar.getItem(selectedIndex);
 		if (item != null)
 			item.use(this);
+	}
+
+	@Override
+	public void onInventoryChange(Inventory inventory, int slot, Item item) {
+		InventorySlot invSlot = inventory.getSlot(slot);
+
+		if (item instanceof PassiveItem) {
+			PassiveItem passiveItem = (PassiveItem) item;
+			
+			if (invSlot.isEmpty())
+				// Remove from the inventory
+				passiveItem.onUnequip(this);
+			else if (invSlot.getItem().isInstanceOf(item))
+				passiveItem.onEquip(this);
+		}
 	}
 }

@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.levelOne.game.GeneriqueEventHandler;
 import com.levelOne.game.item.Item;
 
 public class Inventory implements InventoryInterface {
 
 	private List<InventorySlot> slots;
+	
+	private GeneriqueEventHandler<InventoryEventHandler> eventHandler;
 	
 	/**
 	 * Create a new inventory with a specific size and default contents.
@@ -24,6 +27,7 @@ public class Inventory implements InventoryInterface {
 			throw new IllegalArgumentException("Size must be greater than the length of the default contents.");
 		
 		slots = new ArrayList<InventorySlot>(size);
+		eventHandler = new GeneriqueEventHandler<InventoryEventHandler>();
 		
 		// Filling the inventory with the default contents.
 		int i = 0;
@@ -49,6 +53,8 @@ public class Inventory implements InventoryInterface {
 			throw new IllegalArgumentException("Size must be greater than 0.");
 
 		slots = new ArrayList<InventorySlot>(size);
+		eventHandler = new GeneriqueEventHandler<InventoryEventHandler>();
+		
 		for (int i = 0; i < size; i++) {
 			slots.add(i, new InventorySlot());
 		}
@@ -61,6 +67,8 @@ public class Inventory implements InventoryInterface {
 	 */
 	public Inventory(InventorySlot[] defaultContents) {
 		slots = new ArrayList<InventorySlot>(defaultContents.length);
+		eventHandler = new GeneriqueEventHandler<InventoryEventHandler>();
+		
 		for (int i = 0; i < defaultContents.length; i++) {
 			slots.add(i, defaultContents[i]);
 		}
@@ -80,18 +88,22 @@ public class Inventory implements InventoryInterface {
 			throw new IllegalArgumentException("Quantity must be less than the max stack of the item.");
 		
 		int totalAdded = 0;
-		for (InventorySlot slot : slots) {
-			if (item.isInstanceOf(slot.getItem())) {
+		for (int index = 0; index < slots.size(); index++) {
+			InventorySlot slot = slots.get(index);
+			final int currentIndex = index;
+			
+			if (slot.isEmpty()) {
+                slot.addItem(quantity, item);
+                eventHandler.handleEvent(handler -> handler.onInventoryChange(this, currentIndex, getItem(currentIndex)));
+                return totalAdded + quantity;
+            } else if (item.isInstanceOf(slot.getItem())) {
 				int added = slot.addMax(quantity);
 				totalAdded += added;
 				quantity -= added;
 				
 				if (quantity == 0)
 					return totalAdded;
-			} else if (slot.isEmpty()) {
-                slot.addItem(quantity, item);
-                return totalAdded + quantity;
-            }
+			}
 		}
 		
 		return totalAdded;
@@ -109,14 +121,22 @@ public class Inventory implements InventoryInterface {
 		
 		if (slot.getItem() != null && !item.isInstanceOf(slot.getItem()))
 			throw new IllegalArgumentException("Item must be the same type as the item in the slot.");
+		
+		boolean wasEmpty = slot.isEmpty();
 			
 		slot.addItem(quantity, item);
+		
+		if (wasEmpty)
+			eventHandler.handleEvent(handler -> handler.onInventoryChange(this, slotIndex, getItem(slotIndex)));
 	}	
 
 	@Override
 	public Item removeItem(int slot, int quantity) {
 		Item item = getItem(slot);
 		getSlot(slot).removeItem(quantity);
+		
+		if (getSlot(slot).isEmpty())
+            eventHandler.handleEvent(handler -> handler.onInventoryChange(this, slot, item));
 		
 		return item;
 	}
@@ -188,6 +208,7 @@ public class Inventory implements InventoryInterface {
 	@Override
 	public void moveItem(int originSlot, int destSlot, int quantity, InventoryInterface destInventory) {
 		final InventorySlot origin = getSlot(originSlot);
+		final Item item = origin.getItem();
 		
 		if (origin.isEmpty())
 			throw new IllegalArgumentException("Origin slot must not be empty.");
@@ -197,6 +218,7 @@ public class Inventory implements InventoryInterface {
 		destInventory.addItem(origin.getItem(), quantity, destSlot);
 		origin.removeItem(quantity);
 		
+		eventHandler.handleEvent(handler -> handler.onInventoryChange(this, originSlot, item));
 	}
 
 	@Override
@@ -207,16 +229,20 @@ public class Inventory implements InventoryInterface {
 		if (origin.isEmpty() && dest.isEmpty())
 			return;
 		
-		if (!origin.isEmpty() && !dest.isEmpty() && !origin.getItem().isInstanceOf(dest.getItem()))
-			throw new IllegalArgumentException("Origin and destination slots must contain the same item.");
+		if (origin.isEmpty() || dest.isEmpty())
+			throw new IllegalArgumentException("Origin and destination can't be empty.");
 
 		InventorySlot temp = new InventorySlot(origin.getItem(), origin.getQuantity());
 		
 		origin.removeItem();
-		origin.addItem(dest.getQuantity(), dest.getItem());
+		eventHandler.handleEvent(handler -> handler.onInventoryChange(this, originSlot, origin.getItem()));
 		
-		dest.removeItem();
-		dest.addItem(temp.getQuantity(), temp.getItem());
+		origin.addItem(dest.getQuantity(), dest.getItem());
+		eventHandler.handleEvent(handler -> handler.onInventoryChange(this, originSlot, origin.getItem()));
+		
+		destInventory.removeItem(destSlot, dest.getQuantity());
+		destInventory.addItem(temp.getItem(), temp.getQuantity(), destSlot);
+		
 	}
 	
 	@Override
@@ -231,4 +257,22 @@ public class Inventory implements InventoryInterface {
 		return slots.iterator();
 	}
 
+	
+	
+	
+	/**
+	 * Add an event handler to the inventory.
+	 * @param handler
+	 */
+	public void addEventHandler(InventoryEventHandler handler) {
+		eventHandler.addEventListener(handler);
+	}
+	
+	/**
+	 * Remove an event handler from the inventory.
+	 * @param handler
+	 */
+	public void removeEventHandler(InventoryEventHandler handler) {
+		eventHandler.removeEventListener(handler);
+	}
 }

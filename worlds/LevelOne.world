@@ -17,11 +17,14 @@ player:700,96
 ghost:1000,64
 ghost:1000,0
 jean:500,0
+zombie:2000,96
+zombie:1900, 0
 
 #chest
 pos:18,2
 content:Apple,5,0
 content:Apple,3,3
+content:Ring of life,1,1
 
 #victory
 XPosSuperior:4600

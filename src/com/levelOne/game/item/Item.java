@@ -1,14 +1,12 @@
 package com.levelOne.game.item;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.function.Consumer;
 
 import com.levelOne.game.DamageZone;
 import com.levelOne.game.entity.Entity;
-import com.levelOne.game.entity.living.LivingEntity;
 import com.levelOne.game.item.edible.Apple;
-import com.levelOne.game.tiles.TileType;
+import com.levelOne.game.item.ring.RingOfLife;
 
 import javafx.scene.image.Image;
 
@@ -220,6 +218,8 @@ public abstract class Item implements Cloneable {
 		switch (itemInfo) {
 		case APPLE:
 			return new Apple();
+		case RING_OF_LIFE:
+			return new RingOfLife();
 		default:
 			throw new IllegalArgumentException("Can't create item from type " + itemInfo);
 		}

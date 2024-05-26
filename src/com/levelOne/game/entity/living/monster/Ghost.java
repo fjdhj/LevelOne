@@ -36,6 +36,9 @@ public class Ghost extends Monster {
 
 	@Override
 	public void handleIA(EntitiesManager entitiesManager, TilesManager tilesManager) {
+		if (!playerInRange(entitiesManager.getPlayer()))
+			return;
+
 		Player player = entitiesManager.getPlayer();
 		
 		double deltaX = player.getPosition().getX() - getPosition().getX() + player.getImage().getWidth() / 2;

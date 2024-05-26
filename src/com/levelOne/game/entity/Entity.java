@@ -11,6 +11,7 @@ import com.levelOne.game.Interactable;
 import com.levelOne.game.Point2D;
 import com.levelOne.game.Vect2D;
 import com.levelOne.game.entity.living.monster.Ghost;
+import com.levelOne.game.entity.living.monster.Zombie;
 import com.levelOne.game.entity.living.npc.Jean;
 import com.levelOne.game.tiles.Tile;
 
@@ -492,13 +493,21 @@ public class Entity {
 
 
 
-
+	/**
+	 * Create an entity from a name
+	 * @param name the name of the entity
+	 * @param x    the x position
+	 * @param y    the y position
+	 * @return the entity created
+	 */
 	public static Entity createEntityFromName(String name, int x, int y) {
 		switch (name) {
 		case "ghost":
 			return new Ghost(x, y);
 		case "jean":
 			return new Jean(x, y);
+		case "zombie":
+			return new Zombie(x, y);
 		default:
 			throw new IllegalArgumentException("Entity not found value: " + name);
 		}

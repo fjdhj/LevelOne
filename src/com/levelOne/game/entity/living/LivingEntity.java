@@ -46,6 +46,8 @@ public class LivingEntity extends Entity {
 	
 	private long lastDamage; // The last time the entity was damaged in millis
 	private long damageCooldown; // The time to wait before taking damage again in millis
+	private long lastAttackTime;
+	private long attackCooldown;
 	private Image hurtImage;
 	
 	/**
@@ -101,6 +103,9 @@ public class LivingEntity extends Entity {
 		
 		this.lastDamage = 0;
 		this.damageCooldown = 500; // ms
+		
+		this.attackCooldown = 700; // ms
+		this.lastAttackTime = 0;
 	}
 	
 	
@@ -150,7 +155,7 @@ public class LivingEntity extends Entity {
 	
 	
 	/**
-     * Add a modifier to the maximum life of the entity.
+     * Add a modifier to the maximum life of the entity (The modifier is a scale of current life.
      * @param modifier The modifier to add to the maximum life of the entity.
      * @throws IllegalArgumentException if the modifier is negative or null.
      */
@@ -161,7 +166,7 @@ public class LivingEntity extends Entity {
 		maxLifeModifier *= modifier;
 		int newMaxLife = getMaxLife();
 		
-		eventHandlers.forEach(handler -> handler.maxLifeChange(this, oldMaxLife, newMaxLife));
+		eventHandlers.forEach(handler -> handler.maxLifeChange(this, newMaxLife, oldMaxLife));
 	}
 
 	/**
@@ -176,8 +181,15 @@ public class LivingEntity extends Entity {
         maxLifeModifier /= modifier;
         int newMaxLife = getMaxLife();
         
-        eventHandlers.forEach(handler -> handler.maxLifeChange(this, oldMaxLife, newMaxLife));
-    }
+        eventHandlers.forEach(handler -> handler.maxLifeChange(this, newMaxLife, oldMaxLife));
+    
+        if (getLife() > newMaxLife) {
+        	int delta = getLife() - newMaxLife;
+        	setLife(newMaxLife);
+        	eventHandlers.forEach(handler -> handler.entityDamaged(this, delta));
+        }
+        	
+	}
 	
 	
 	
@@ -338,6 +350,13 @@ public class LivingEntity extends Entity {
 		hurtImage = img;
 	}
 	
+	/**
+	 * Set the cooldown (in ms) between each attack/primaryAction do by the entity.
+	 * @param cooldown
+	 */
+	protected void setAttackCooldown(long cooldown) {
+		attackCooldown = cooldown;
+	}
 	
 	public void walk(Direction direction) {
 		if (isWalking()) {
@@ -387,13 +406,15 @@ public class LivingEntity extends Entity {
 	 * Execute the primary action of the entity.
 	 */
 	public void primaryAction() {
-		if (Entity.isFreezed())
-			return;
+		if (Entity.isFreezed()) return;
+		
+		if (!canAttack()) return;
 		
 		double x = -getRange();
 		double y = -getRange();
 
 		damageZone = new DamageZone(x, y, getImage().getWidth() + (getRange() * 2), getImage().getHeight() + (getRange() * 2), getDamage(), 0.2, this);
+		setLastAttackNow();
 	}
 	
 	/**
@@ -405,8 +426,21 @@ public class LivingEntity extends Entity {
 
 	}
 	
+	/**
+	 * Check if the entity can attack (do the primary action).
+	 * @return True if the entity can attack, false otherwise.
+	 */
+	protected boolean canAttack() {
+		return System.currentTimeMillis() - lastAttackTime > attackCooldown;
+	}
 	
-	
+	/**
+	 * Set the last attack time to now.
+	 * Use full for child class who redifine the primaryAction method.
+	 */
+	protected void setLastAttackNow() {
+		lastAttackTime = System.currentTimeMillis();
+	}
 	
 	/**
 	 * Add an event handler to the entity

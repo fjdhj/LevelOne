@@ -75,15 +75,16 @@ public class InventoryView extends BorderPane implements MenuView {
 			 // From slot to hand
 			inventory.moveItem(slotPosition, 0, slot.getQuantity(), handInventory);
 		} else if (!slot.isEmpty() && !handInventory.isSlotEmpty(0)) {
-			if (slot.getItem().isInstanceOf(slot.getItem())) {
+			if (slot.getItem().isInstanceOf(handInventory.getItem(0))) {
 				// Same item
 				int toMove = Math.min(slot.getItem().getMaxStack() - slot.getQuantity(), handInventory.getQuantity(0));
 				handInventory.moveItem(0, slotPosition, toMove, inventory);
 			
 			} else {
 				// Swap
-				inventory.moveItem(slotPosition, 0, slot.getQuantity(), handInventory);
-				handInventory.moveItem(0, slotPosition, handInventory.getQuantity(0), inventory);
+				inventory.swapItem(slotPosition, 0, handInventory);
+				//inventory.moveItem(slotPosition, 0, slot.getQuantity(), handInventory);
+				//handInventory.moveItem(0, slotPosition, handInventory.getQuantity(0), inventory);
 			}
 		}
 		

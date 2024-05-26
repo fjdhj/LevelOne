@@ -6,7 +6,7 @@ import com.levelOne.TilesManager;
 public interface IAEntityInterface {
 	
 	/**
-	 * Handle the IA of the entity
+	 * Handle the IA of the entity, making it move and act
 	 * @param entitiesManager the entities manager of the game
 	 * @param tilesManager the tiles manager of the game
 	 */

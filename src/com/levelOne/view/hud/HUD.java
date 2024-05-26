@@ -95,7 +95,8 @@ public class HUD extends BorderPane {
 	 * Update the color of the life point
 	 * @param nbLife
 	 */
-	public void updateLifeLevel(int nbLife) {		
+	public void updateLifeLevel(int nbLife) {
+		System.out.println("nbLife" + nbLife);
 		for (int i = 0; i < nbLife; i++) {
 			Rectangle rect = lifePoint.get(i);
 			rect.setFill(Color.RED);
@@ -109,19 +110,20 @@ public class HUD extends BorderPane {
 	
 	public void updateMaxLife(LivingEntity entity, int newMaxLife, int oldMaxLide) {
 		int deltaLife = newMaxLife - oldMaxLide;
+
 		if (deltaLife < 0) {
 			// Reduce max life
 			for (int i = 0; i < -deltaLife; i++) removeLifeRect();
 		} else {
 			// Adding max life
 			for (int i = 0; i < deltaLife; i++) {
-				Rectangle rect = new Rectangle();
-				rect.getStyleClass().add("noLife");
+				Rectangle rect = new Rectangle(16, 16);
+				rect.setFill(Color.GRAY);
 				addLifeRect(rect);
 			}
 		}
 		
-		updateLifeLevel(entity.getLife());
+		//updateLifeLevel(entity.getLife());
 	}
 	
 	public void seltecItem(Player player, int newHotbarIndex, int oldHotbarIndex) {
