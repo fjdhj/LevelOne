@@ -122,8 +122,6 @@ public class HUD extends BorderPane {
 				addLifeRect(rect);
 			}
 		}
-		
-		//updateLifeLevel(entity.getLife());
 	}
 	
 	public void seltecItem(Player player, int newHotbarIndex, int oldHotbarIndex) {

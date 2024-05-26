@@ -40,8 +40,11 @@ public class Zombie extends Monster {
 
 	@Override
 	public void handleIA(EntitiesManager entitiesManager, TilesManager tilesManager) {
-		if (!playerInRange(entitiesManager.getPlayer()))
+		if (!playerInRange(entitiesManager.getPlayer())) {
+			stopWalking(getDirection());
 			return;
+		}
+			
 
 		Player player = entitiesManager.getPlayer();
 		

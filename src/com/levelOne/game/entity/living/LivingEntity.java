@@ -257,12 +257,25 @@ public class LivingEntity extends Entity {
 		return inventory;
 	}
 	
+	/**
+	 * Return the image of the entity.
+	 * If the entity is hurt, the hurt image is returned instead of the normal image (if available).
+	 * @return The image of the entity.
+	 */
 	@Override
 	public Image getImage() {
 		if (hurtImage != null && !canTakeDamage())
 			return hurtImage;
 			
 		return super.getImage();
+	}
+	
+	/**
+	 * Return the direction of the entity.
+	 * @return The direction of the entity.
+	 */
+	public Direction getDirection() {
+		return currentDirection;
 	}
 	
 	/**
