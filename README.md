@@ -9,6 +9,9 @@ E : Ouvrir l'inventaire
 Clic gauche : Taper
 Clic droit : Utiliser l'objet
 
+Un rectangle rouge transparent apparaît lorsqu'une entité frappe, il s'agit de la zone de dégât, elle frappe toute entité vivante s'y trouvant.
+L'entité prenant des dégâts peut vois sont images changer, pendant ce temps, elle est immunisée contre les dégâts.
+
 ## Lancer le jeu
 Pour le lancer le jeu, utiliser au minimum Java 17 et JavaFX 17 en spécifiant le chemin vers JavaFX dans la commande
 ```
