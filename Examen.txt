@@ -1,4 +1,5 @@
 PNJ 1 : Jean
+PNJ 2 : Jack
 
 
 1)
@@ -32,13 +33,13 @@ Item 2 - Steal Wand (Baton vert)
 Ajout de la class abstraite MagicItem (com.levelOne.game.item.magic.MagicItem)
 Ajout dans player d'une fonction pour intéragire ajouter les PNJs déjà rencontré (addInteraction dans com.levelOne.game.entity.living.Player)
 Ajout de PNJs rencontré avec la méthode de Player dans interact (com.levelOne.WorldEngine)
-Ajout d'un atribut interactionsNPC pour stocker les PNJ visité
+Ajout d'un attribut interactionsNPC pour stocker les PNJ visité
 Ajout d'un évenement si l'objet veut intéragir avec le monde (com.levelOne.game.entity.Player)
 Ajout d'une classe pour l'IHM de vole (com.levelOne.view.hud.InventoryHUD)
 
 Item 4 - Sword of life stealing
 Ajout d'un item dans le jeu (com.levelOne.game.item.SwordOfLifeStealing)
-Ajout d'un evenement quand une entité prend des dégats (com.levelOne.game.DamageZoneEvent et com.levelOne.game.DamageZone)
+Ajout d'un evenement quand une entité prend des dégâts (com.levelOne.game.DamageZoneEvent et com.levelOne.game.DamageZone)
 Ajout d'une fonction pour voler de la vie dans la class Player (com.levelOne.game.entity.living.Player)
 Ajout de l'utilisation des items dans la class Player (primaryAction dans com.levelOne.game.entity.living.Player)
 
