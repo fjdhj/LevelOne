@@ -1,5 +1,5 @@
 PNJ 1 : Jean
-PNJ 2 : Jack
+PNJ 2 : Jack (N'a pas de dialogue, INTERACTION WITH JACK sera visible dans la console)
 
 
 1)

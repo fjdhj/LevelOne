@@ -37,7 +37,7 @@ private static final String NAME = "Jack";
 
 	@Override
 	public void interact(Entity source, InterfaceManager manager) {
-		// TODO Auto-generated method stub
+		System.out.println("INTERACTION WITH JACK");
 
 	}
 
