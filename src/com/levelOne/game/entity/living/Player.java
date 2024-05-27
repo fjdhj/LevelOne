@@ -25,7 +25,7 @@ public class Player extends LivingEntity implements InventoryEventHandler {
 	private static final int DEFAULT_ATTACK = 2;
 	private static final int DEFAULT_DEFENSE = 1;
 	private static final int DEFAULT_RANGE = 32;
-	private static final int DEFAULT_INVENTORY_SIZE = 8;
+	private static final int DEFAULT_INVENTORY_SIZE = 1;
 	
 	private Inventory hotBar;
 	private int selectedIndex = 0;

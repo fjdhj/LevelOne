@@ -155,6 +155,15 @@ public class Inventory implements InventoryInterface {
 		return	getSlot(slot).isEmpty();
 	}
 	
+	public boolean isEmpty() {
+		for (InventorySlot slot : slots) {
+			if (!slot.isEmpty())
+				return false;
+		}
+
+		return true;
+	}
+	
 	@Override
 	public int getSize() {
 		return slots.size();

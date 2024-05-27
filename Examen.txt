@@ -1,0 +1,24 @@
+PNJ 1 : Jean
+
+
+1)
+a - 
+Modification de la variable DEFAULT_INVENTORY_SIZE à 1 dans player (com.levelOne.game.entity.living.Player)
+
+Comme le joueur a un deuxième inventaire (la hotbar) qui est par défaut de taille 4,
+on met la taille de l'inventaire à 1 pour que le joueur se retrouve au total avec 5 slot d'inventaire
+
+b -
+Creation de la class Jack (PNJ bleu) (com.levelOne.game.entity.living.npc.Jean)
+L'autre PNJ est déjà existant Jean (PNJ vert) (com.levelOne.entity.living.npc.Jack)
+
+Modification de la map pour ajouter les PNJ (world/LevelOne.world) sous la section #entities
+Modification de la fonction createEntityFromName pour ajouter Jack comme entité possible (com.levelOne.game.entity.Entity)
+
+Ajout de l'option InventorySize dans le constructeur de NPC  (com.levelOne.entity.living.NPC)
+Ajout d'un inventaire de taille 2 à Jack et Jean au constructeur (com.levelOne.entity.living.npc.Jack et com.levelOne.game.entity.living.npc.Jean)
+Ajout d'item dans l'inventaire de Jack et Jean dans le constructeur (com.levelOne.entity.living.npc.Jack et com.levelOne.game.entity.living.npc.Jean)
+
+2-
+Ajout de dialogue dans la class Jean, et modification de interact (com.levelOne.game.entity.living.npc.Jean)
+Ajout d'une fonction vérifiant si l'inventaire est vide dans la class Inventory (com.levelOne.game.inventory.Inventory)

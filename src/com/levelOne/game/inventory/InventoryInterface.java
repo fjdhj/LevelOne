@@ -88,6 +88,12 @@ public interface InventoryInterface extends Iterable<InventorySlot>{
 	public int remainingSpace(Item item);
 	
 	/**
+	 * Check if the inventory is empty.
+	 * @return True if the inventory is empty, false otherwise.
+	 */
+	public boolean isEmpty();
+	
+	/**
 	 * Move all item in the origin slot to the destination slot.
 	 * 
 	 * @param originSlot The origin slot.
