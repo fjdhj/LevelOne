@@ -1,6 +1,7 @@
 package com.levelOne.game.entity.living;
 
 import com.levelOne.game.inventory.Inventory;
+import com.levelOne.game.item.Item;
 
 public interface PlayerEventHandler {
 	/**
@@ -22,4 +23,10 @@ public interface PlayerEventHandler {
 	 * @param player The player who want to interact with the world.
 	 */
 	public void interact(Player player);
+	
+	/**
+	 * Call when an item is used and need to interact with world.
+	 * @param item
+	 */
+	public void itemInteractWithWorld(Item item);
 }

@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
 
 public class Jack extends NPC {
 	
-private static final String NAME = "Jean";
+private static final String NAME = "Jack";
 	
 	//x, y, weight, maxLife, life, baseAttack, baseDefense, baseSpeed
 	private static final double WEIGHT = 80;
@@ -26,7 +26,7 @@ private static final String NAME = "Jean";
 	private static final Image IMAGE = new Image(MainApp.class.getResource("ressources/entity/npc2.png").toExternalForm());
 	
 	public Jack(int x, int y) {
-		super(x, y, WEIGHT, MAX_LIFE, LIFE, BASE_ATTACK, BASE_DEFENSE, BASE_SPEED, INVENTORY_SIZE);
+		super(x, y, WEIGHT, MAX_LIFE, LIFE, BASE_ATTACK, BASE_DEFENSE, BASE_SPEED, INVENTORY_SIZE, NAME);
 		
 		setImage(IMAGE);
 		

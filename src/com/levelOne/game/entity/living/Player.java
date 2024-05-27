@@ -12,7 +12,7 @@ import com.levelOne.game.inventory.InventoryEventHandler;
 import com.levelOne.game.inventory.InventorySlot;
 import com.levelOne.game.item.Item;
 import com.levelOne.game.item.PassiveItem;
-import com.levelOne.game.item.edible.Apple;
+import com.levelOne.game.item.magic.StealWand;
 
 import javafx.scene.image.Image;
 
@@ -32,6 +32,11 @@ public class Player extends LivingEntity implements InventoryEventHandler {
 
 	private final PlayerKeyObserver playerKeyObserver;
 	private ArrayList<PlayerEventHandler> playerEventHandler;
+	
+	/**
+	 * Store the NPC the player have interacted with.
+	 */
+	private ArrayList<NPC> interactionsNPC;
 			
 	public Player (KeyManager keyManager) {
 		this(STARTING_LIFE, keyManager);
@@ -45,19 +50,19 @@ public class Player extends LivingEntity implements InventoryEventHandler {
 		System.out.println(playerKeyObserver);
 		keyManager.addMousseObserver(playerKeyObserver);
 		
+		interactionsNPC = new ArrayList<NPC>();
+		
 		setImage(new Image(MainApp.class.getResource("ressources/entity/player.png").toString()));
 		setHurtImage(new Image(MainApp.class.getResource("ressources/entity/player_hurt.png").toExternalForm()));
 		
 		playerEventHandler = new ArrayList<PlayerEventHandler>();
 		
 		hotBar = new Inventory(4);
-		hotBar.addItem(new Apple(), 1, 0);
-		hotBar.addItem(new Apple(), 2, 1);
-		hotBar.addItem(new Apple(), 3, 2);
-		hotBar.addItem(new Apple(), 4, 3);
 		
 		getInventory().addEventHandler(this);
 		hotBar.addEventHandler(this);
+		
+		initInvContent();
 	}
 
 	public Player(int x, int y, int life, KeyManager keyManager) {
@@ -69,9 +74,20 @@ public class Player extends LivingEntity implements InventoryEventHandler {
 		setImage(new Image(MainApp.class.getResource("ressources/entity/player.png").toExternalForm()));
 		setHurtImage(new Image(MainApp.class.getResource("ressources/entity/player_hurt.png").toExternalForm()));
 		
+		interactionsNPC = new ArrayList<NPC>();
+		
 		playerEventHandler = new ArrayList<PlayerEventHandler>();
 		
 		hotBar = new Inventory(4);
+		
+		getInventory().addEventHandler(this);
+		hotBar.addEventHandler(this);
+		
+		initInvContent();		
+	}
+	
+	private void initInvContent() {
+		getHotBar().addItem(new StealWand(), 1, 0);
 	}
 	
 	public Inventory getHotBar() {
@@ -135,11 +151,30 @@ public class Player extends LivingEntity implements InventoryEventHandler {
 		playerEventHandler.remove(handler);
 	}
 
-
+	
+	/**
+	 * Add npc to the list of the npc the player have interacted with.
+	 * @param npc The npc to add.
+	 */
+	public void addInteraction(NPC npc) {
+		if (!interactionsNPC.contains(npc))    
+			interactionsNPC.add(npc);
+	}
+	
+	/**
+	 * Get the npc the player have interacted with.
+	 */
+	public ArrayList<NPC> getInteractionsNPC() {
+		return interactionsNPC;
+	}
 	
 	
 	public void interactWithWorld() {
 		playerEventHandler.forEach(e -> e.interact(this));
+	}
+	
+	public void useItemOnWorld(Item item) {
+		playerEventHandler.forEach(e -> e.itemInteractWithWorld(item));
 	}
 	
 	@Override

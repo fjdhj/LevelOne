@@ -22,3 +22,11 @@ Ajout d'item dans l'inventaire de Jack et Jean dans le constructeur (com.levelOn
 2-
 Ajout de dialogue dans la class Jean, et modification de interact (com.levelOne.game.entity.living.npc.Jean)
 Ajout d'une fonction vérifiant si l'inventaire est vide dans la class Inventory (com.levelOne.game.inventory.Inventory)
+
+3-
+Item 1
+Ajout dans player d'une fonction pour intéragire ajouter les PNJs déjà rencontré (addInteraction dans com.levelOne.game.entity.living.Player)
+Ajout de PNJs rencontré avec la méthode de Player dans interact (com.levelOne.WorldEngine)
+Ajout d'un evenement si l'objet veut intéragir avec le monde (com.levelOne.game.entity.Player)
+Ajout d'une classe pour l'interface de vole (com.levelOne.view.hud.InventoryHUD)
+

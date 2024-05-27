@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 public enum ItemEnum {
     APPLE("Apple", 64, "apple", ItemType.EDIBLE),
     RING_OF_LIFE("Ring of life", 1, "red_ring", ItemType.RING),
+    STEAL_WAND("Wand of steal", 1, "steal_wand", ItemType.MAGIC);
     //RING_OF_DEATH("Ring of death", 1, null, ItemType.RING),
     ;
 

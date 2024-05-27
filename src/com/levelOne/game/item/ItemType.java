@@ -2,7 +2,7 @@ package com.levelOne.game.item;
 
 public enum ItemType {
 	
-	EDIBLE("edible"), RING("ring");
+	EDIBLE("edible"), RING("ring"), MAGIC("magic");
 	
 	private String name;
 	ItemType(String name) {

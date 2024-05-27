@@ -47,7 +47,7 @@ public class Jean extends NPC {
 	private static final Image IMAGE = new Image(MainApp.class.getResource("ressources/entity/npc1.png").toExternalForm());
 	
 	public Jean(int x, int y) {
-		super(x, y, WEIGHT, MAX_LIFE, LIFE, BASE_ATTACK, BASE_DEFENSE, BASE_SPEED, INVENTORY_SIZE);
+		super(x, y, WEIGHT, MAX_LIFE, LIFE, BASE_ATTACK, BASE_DEFENSE, BASE_SPEED, INVENTORY_SIZE, NAME);
 		
 		setImage(IMAGE);
 		

@@ -6,9 +6,7 @@ import java.util.function.Consumer;
 import com.levelOne.game.DamageZone;
 import com.levelOne.game.Vect2D;
 import com.levelOne.game.entity.Entity;
-import com.levelOne.game.entity.living.monster.Ghost;
 import com.levelOne.game.inventory.Inventory;
-import com.levelOne.game.item.ItemEventListener;
 
 import javafx.scene.image.Image;
 

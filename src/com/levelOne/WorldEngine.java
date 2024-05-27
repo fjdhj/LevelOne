@@ -13,9 +13,12 @@ import com.levelOne.game.Point2D;
 import com.levelOne.game.entity.Entity;
 import com.levelOne.game.entity.living.LivingEntity;
 import com.levelOne.game.entity.living.LivingEntityEventHandler;
+import com.levelOne.game.entity.living.NPC;
 import com.levelOne.game.entity.living.Player;
 import com.levelOne.game.entity.living.PlayerEventHandler;
 import com.levelOne.game.inventory.Inventory;
+import com.levelOne.game.item.Item;
+import com.levelOne.game.item.magic.StealWand;
 import com.levelOne.game.tiles.Tile;
 import com.levelOne.game.victory.VictoryCondition;
 import com.levelOne.view.FXView;
@@ -267,7 +270,7 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 	
 	@Override
 	public void closeDialog() {
-		if (popUp != null && popUp instanceof Dialog)
+		//if (popUp != null && popUp instanceof Dialog)
 			closePopUp();
 	}
 	
@@ -285,6 +288,11 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 	public void pause() {
 		if (isPopUpOpen())
 			closePopUp();
+	}
+	
+	@Override
+	public void openCustom(Pane pane) {
+		showPopUp(pane);
 	}
 	
 	/**
@@ -348,7 +356,18 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 	@Override
 	public void interact(Player player) {
 		Interactable interactable = player.interactWith(tileManager, entitiesManager);
-		if (interactable != null)
+		if (interactable != null) {
+			if (interactable instanceof NPC)
+				player.addInteraction((NPC) interactable);
+			
 			interactable.interact(player, this);
+		}
+	}
+
+	@Override
+	public void itemInteractWithWorld(Item item) {
+		if (item instanceof StealWand)
+			((StealWand) item).steal(this, entitiesManager.getPlayer());
+		
 	}
 }
