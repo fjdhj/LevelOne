@@ -12,6 +12,9 @@ import com.levelOne.game.inventory.InventoryEventHandler;
 import com.levelOne.game.inventory.InventorySlot;
 import com.levelOne.game.item.Item;
 import com.levelOne.game.item.PassiveItem;
+import com.levelOne.game.item.SwordLifeStealing;
+import com.levelOne.game.item.magic.EndCoin;
+import com.levelOne.game.item.magic.ShowWand;
 import com.levelOne.game.item.magic.StealWand;
 
 import javafx.scene.image.Image;
@@ -88,6 +91,9 @@ public class Player extends LivingEntity implements InventoryEventHandler {
 	
 	private void initInvContent() {
 		getHotBar().addItem(new StealWand(), 1, 0);
+		getHotBar().addItem(new ShowWand(), 1, 1);
+		getHotBar().addItem(new SwordLifeStealing(), 1, 2);
+		getHotBar().addItem(new EndCoin(), 1, 3);
 	}
 	
 	public Inventory getHotBar() {
@@ -174,7 +180,7 @@ public class Player extends LivingEntity implements InventoryEventHandler {
 	}
 	
 	public void useItemOnWorld(Item item) {
-		playerEventHandler.forEach(e -> e.itemInteractWithWorld(item));
+		playerEventHandler.forEach(e -> e.itemInteractWithWorld(item, this));
 	}
 	
 	@Override
@@ -185,7 +191,12 @@ public class Player extends LivingEntity implements InventoryEventHandler {
 		double x = -getRange();
 		double y = getRange();
 
-		setDamageZone(new DamageZone(x, y, getImage().getWidth() + (getRange() * 2), getImage().getHeight() + (getRange() * 2), getDamage(), 0.2, this));
+		DamageZone damageZone = new DamageZone(x, y, getImage().getWidth() + (getRange() * 2), getImage().getHeight() + (getRange() * 2), getDamage(), 0.2, this);
+		Item inHand = hotBar.getItem(selectedIndex);
+		if (inHand != null)
+			damageZone = inHand.hitWith(damageZone, this);
+		
+		setDamageZone(damageZone);
 	}
 	
 	@Override

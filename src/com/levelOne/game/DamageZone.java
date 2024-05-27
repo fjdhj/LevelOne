@@ -16,6 +16,8 @@ public class DamageZone {
 	
 	private long startTime;
 	
+	private DamageZoneEvent damageZoneEvent;
+	
 	/**
 	 * Create a damage zone
 	 * @param x        the x position of the zone
@@ -90,9 +92,11 @@ public class DamageZone {
 		for (Entity entity : entitiesManager) {
 			if (entity instanceof LivingEntity) {
 				LivingEntity livingEntity = (LivingEntity) entity;
-				if (livingEntity.isAlive() && livingEntity != source && this.isInZone(livingEntity))
+				if (livingEntity.isAlive() && livingEntity != source && this.isInZone(livingEntity)) {
 					livingEntity.hurt(damage);
-
+					if (damageZoneEvent != null)
+						damageZoneEvent.handle(this, livingEntity);
+				}
 			}
 		}
 	}
@@ -145,4 +149,11 @@ public class DamageZone {
 		return duration;
 	}
 	
+	/**
+	 * Set the event of the zone when an entity is hit
+	 * @param damageZoneEvent
+	 */
+	public void setDamageZoneEvent(DamageZoneEvent damageZoneEvent) {
+		this.damageZoneEvent = damageZoneEvent;
+	}
 }

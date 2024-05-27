@@ -28,5 +28,5 @@ public interface PlayerEventHandler {
 	 * Call when an item is used and need to interact with world.
 	 * @param item
 	 */
-	public void itemInteractWithWorld(Item item);
+	public void itemInteractWithWorld(Item item, LivingEntity user);
 }

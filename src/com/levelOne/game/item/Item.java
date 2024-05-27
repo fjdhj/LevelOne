@@ -5,7 +5,11 @@ import java.util.function.Consumer;
 
 import com.levelOne.game.DamageZone;
 import com.levelOne.game.entity.Entity;
+import com.levelOne.game.entity.living.LivingEntity;
 import com.levelOne.game.item.edible.Apple;
+import com.levelOne.game.item.magic.EndCoin;
+import com.levelOne.game.item.magic.ShowWand;
+import com.levelOne.game.item.magic.StealWand;
 import com.levelOne.game.item.ring.RingOfLife;
 
 import javafx.scene.image.Image;
@@ -60,7 +64,7 @@ public abstract class Item implements Cloneable {
 	 * attacking, etc). So in most cases, cible is the target of the item.
 	 * @param cible The entity to hit with the item.
 	 */
-	public DamageZone hitWith(DamageZone baseDamageZone) {
+	public DamageZone hitWith(DamageZone baseDamageZone, LivingEntity user) {
 		return baseDamageZone;
 	}
 
@@ -220,6 +224,14 @@ public abstract class Item implements Cloneable {
 			return new Apple();
 		case RING_OF_LIFE:
 			return new RingOfLife();
+		case SHOW_WAND:
+			return new ShowWand();
+		case STEAL_WAND:
+			return new StealWand();
+		case SWORD_LIFE_STEALING:
+			return new SwordLifeStealing();
+		case END_COIN:
+			return new EndCoin();
 		default:
 			throw new IllegalArgumentException("Can't create item from type " + itemInfo);
 		}

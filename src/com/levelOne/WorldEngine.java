@@ -18,7 +18,8 @@ import com.levelOne.game.entity.living.Player;
 import com.levelOne.game.entity.living.PlayerEventHandler;
 import com.levelOne.game.inventory.Inventory;
 import com.levelOne.game.item.Item;
-import com.levelOne.game.item.magic.StealWand;
+import com.levelOne.game.item.magic.EndCoin;
+import com.levelOne.game.item.magic.MagicItem;
 import com.levelOne.game.tiles.Tile;
 import com.levelOne.game.victory.VictoryCondition;
 import com.levelOne.view.FXView;
@@ -257,8 +258,8 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 	}
 	
 	@Override
-	public void displayInventory(Inventory inventory) {
-		showPopUp(new InventoryView(inventory, entitiesManager.getPlayer().getHotBar()));
+	public void displayInventory(Inventory inventory, boolean canInteract) {
+		showPopUp(new InventoryView(inventory, entitiesManager.getPlayer().getHotBar(), canInteract));
 	}
 
 	@Override
@@ -279,7 +280,7 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 	@Override
 	public void openInventory() {
 		if (!isPopUpOpen())
-			displayInventory(entitiesManager.getPlayer().getInventory());
+			displayInventory(entitiesManager.getPlayer().getInventory(), true);
 		else if (popUp instanceof InventoryView)
 			closePopUp();
 	}
@@ -307,6 +308,12 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 				return;
 			}
 		}
+	}
+	
+	private void forceVictory() {
+		System.out.println("Victory forced");
+		stop();
+		event.onVictory();
 	}
 	
 	/**
@@ -365,9 +372,11 @@ public class WorldEngine extends AnimationTimer implements FXView, InterfaceCall
 	}
 
 	@Override
-	public void itemInteractWithWorld(Item item) {
-		if (item instanceof StealWand)
-			((StealWand) item).steal(this, entitiesManager.getPlayer());
+	public void itemInteractWithWorld(Item item, LivingEntity user) {
+		if (item instanceof EndCoin)
+			forceVictory();
+		else if (item instanceof MagicItem)
+			((MagicItem) item).useMagic(user, this, tileManager, entitiesManager);
 		
 	}
 }

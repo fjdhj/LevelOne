@@ -24,9 +24,24 @@ Ajout de dialogue dans la class Jean, et modification de interact (com.levelOne.
 Ajout d'une fonction vérifiant si l'inventaire est vide dans la class Inventory (com.levelOne.game.inventory.Inventory)
 
 3-
-Item 1
+Item 1 - Show Wand (Baton rouge)
+Modification de l'IHM de vole pour gérer la vue d'un inventaire (via argument du constructeur canSteal)
+Creation de la classe ShowWand (com.levelOne.game.item.ShowWand)
+
+Item 2 - Steal Wand (Baton vert)
+Ajout de la class abstraite MagicItem (com.levelOne.game.item.magic.MagicItem)
 Ajout dans player d'une fonction pour intéragire ajouter les PNJs déjà rencontré (addInteraction dans com.levelOne.game.entity.living.Player)
 Ajout de PNJs rencontré avec la méthode de Player dans interact (com.levelOne.WorldEngine)
-Ajout d'un evenement si l'objet veut intéragir avec le monde (com.levelOne.game.entity.Player)
-Ajout d'une classe pour l'interface de vole (com.levelOne.view.hud.InventoryHUD)
+Ajout d'un atribut interactionsNPC pour stocker les PNJ visité
+Ajout d'un évenement si l'objet veut intéragir avec le monde (com.levelOne.game.entity.Player)
+Ajout d'une classe pour l'IHM de vole (com.levelOne.view.hud.InventoryHUD)
 
+Item 4 - Sword of life stealing
+Ajout d'un item dans le jeu (com.levelOne.game.item.SwordOfLifeStealing)
+Ajout d'un evenement quand une entité prend des dégats (com.levelOne.game.DamageZoneEvent et com.levelOne.game.DamageZone)
+Ajout d'une fonction pour voler de la vie dans la class Player (com.levelOne.game.entity.living.Player)
+Ajout de l'utilisation des items dans la class Player (primaryAction dans com.levelOne.game.entity.living.Player)
+
+Item 5 - End coin
+Creation de la classe EndCoin (com.levelOne.game.item.EndCoin)
+Ajout d'une fonction forceVictory (com.levelOne.WorldEngine)

@@ -1,18 +1,14 @@
 package com.levelOne.view.menus;
 
 import com.levelOne.SceneController;
-import com.levelOne.WorldEngine;
 import com.levelOne.view.FXView;
-import com.levelOne.view.WorldEvent;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 
 public class StartMenu implements FXView {
 
@@ -20,10 +16,7 @@ public class StartMenu implements FXView {
 	private Button exitButton;
 	
 	private FlowPane root;
-	private Scene scene;
-	
-	private SceneController controller;
-	
+		
 	public StartMenu(SceneController controller) {		
 		playButton = new Button("Play");
 		playButton.setOnAction(e -> {
@@ -40,9 +33,6 @@ public class StartMenu implements FXView {
 		root.setVgap(16);
 		root.setAlignment(Pos.CENTER);
 		root.getChildren().addAll(playButton, exitButton);
-		
-		this.controller = controller;
-		//this.scene = new Scene(root);
 	}
 	
 	@Override

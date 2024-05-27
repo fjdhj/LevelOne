@@ -34,7 +34,7 @@ public class Jean extends NPC {
 	private static final DialogAction[] invAct = {
 			(InterfaceManager interfaceManager, EntitiesManager entitiesManager, TilesManager tilesManager, Entity source) -> {
 				interfaceManager.closeDialog();
-				interfaceManager.displayInventory(((NPC) source).getInventory());
+				interfaceManager.displayInventory(((NPC) source).getInventory(), false);
 			},
 			
 			(InterfaceManager interfaceManager, EntitiesManager entitiesManager, TilesManager tilesManager, Entity source) -> {

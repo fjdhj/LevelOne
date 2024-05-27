@@ -10,7 +10,7 @@ public interface InterfaceManager {
 	 * Display the inventory to the user
 	 * @param inventory The inventory to display
 	 */
-	public void displayInventory(Inventory inventory);
+	public void displayInventory(Inventory inventory, boolean canInteract);
 	
 	/**
 	 * Display a dialogue to the user

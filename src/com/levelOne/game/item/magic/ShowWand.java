@@ -9,10 +9,10 @@ import com.levelOne.game.entity.living.Player;
 import com.levelOne.game.item.ItemEnum;
 import com.levelOne.view.hud.StealView;
 
-public class StealWand extends MagicItem {
+public class ShowWand extends MagicItem {
 
-	public StealWand() {
-		super(ItemEnum.STEAL_WAND);
+	public ShowWand() {
+		super(ItemEnum.SHOW_WAND);
 	}
 
 	@Override
@@ -23,16 +23,14 @@ public class StealWand extends MagicItem {
 
 	@Override
 	public boolean reset() {
-		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public void useMagic(LivingEntity user, InterfaceManager manager, TilesManager tilesManager,
 			EntitiesManager entitiesManager) {
 		if (user instanceof Player)
-			manager.openCustom(new StealView(this, (Player)user, manager, true));
+			manager.openCustom(new StealView(this, (Player)user, manager, false));
 		
 	}
-
 }

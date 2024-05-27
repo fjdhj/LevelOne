@@ -18,10 +18,14 @@ public class InventoryView extends BorderPane implements MenuView {
 	
 	private Inventory handItemOriginInventory;
 	private int handItemOriginSlot;
+
+	private boolean canInteract;
 	
 	private static final int NB_SLOT_ROW = 4;
 
-	public InventoryView(Inventory mainInventory, Inventory hotBarInventory) {
+	public InventoryView(Inventory mainInventory, Inventory hotBarInventory, boolean canInteract) {
+		this.canInteract = canInteract;
+		
 		mainInventoryView = new GridPane();
 		hotBarInventoryView = new GridPane();
 		
@@ -53,9 +57,10 @@ public class InventoryView extends BorderPane implements MenuView {
 			final int localX = x;
 			final int localY = y;
 			
-			slotView.setOnAction(event -> {
-				handleSlotClick(inventory, slot, (localY * NB_SLOT_ROW) + localX);
-			});
+			if (canInteract)
+				slotView.setOnAction(event -> {
+					handleSlotClick(inventory, slot, (localY * NB_SLOT_ROW) + localX);
+				});
 			
 			grid.add(slotView, x, y);
 			

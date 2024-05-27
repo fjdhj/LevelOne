@@ -26,7 +26,7 @@ public class InventoryTile extends Tile implements Interactable {
 	@Override
 	public void interact(Entity source, InterfaceManager manager) {
 		if (source instanceof Player) {
-			manager.displayInventory(inventory);
+			manager.displayInventory(inventory, true);
 		}
 	}
 

@@ -2,11 +2,7 @@ package com.levelOne;
 
 import java.util.Iterator;
 
-import com.levelOne.game.Point2D;
-import com.levelOne.game.entity.Entity;
 import com.levelOne.game.tiles.Tile;
-
-import javafx.scene.image.Image;
 
 /**
  * The TilesManager class is used to manage the tiles of the world

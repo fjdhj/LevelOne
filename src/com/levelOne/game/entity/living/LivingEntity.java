@@ -143,6 +143,21 @@ public class LivingEntity extends Entity {
 	}
 
 	/**
+	 * Steal all the life of the entity and give it to the healedEntity.
+	 * @param healedEntity The entity to steal the life from.
+	 */
+	public void stealAllLife(LivingEntity healedEntity) {
+		if (this instanceof NPC)
+			return;
+		
+		int lifeToSteal = getLife();
+		System.out.println(healedEntity + " vole " + lifeToSteal + " point(s) de vie");
+		healedEntity.heal(lifeToSteal);
+		setLife(0);
+		eventHandlers.forEach(handler -> handler.entityDamaged(this, lifeToSteal));
+	}
+	
+	/**
 	 * Check if the entity can take damage.
 	 * @return True if the entity can take damage, false otherwise.
 	 */

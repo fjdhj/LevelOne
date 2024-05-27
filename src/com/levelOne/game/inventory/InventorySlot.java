@@ -7,9 +7,6 @@ import com.levelOne.game.item.Item;
 import com.levelOne.game.item.ItemEnum;
 import com.levelOne.game.item.ItemEventListener;
 
-import javafx.beans.Observable;
-import javafx.event.EventHandler;
-
 public class InventorySlot implements ItemEventListener {
 
 	private Item item;
